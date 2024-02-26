@@ -1,0 +1,3 @@
+D:/CodeBank/Repositories/Archangel/cmake-build-debug/CMakeFiles/Archangel.dir
+D:/CodeBank/Repositories/Archangel/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/CodeBank/Repositories/Archangel/cmake-build-debug/CMakeFiles/rebuild_cache.dir
