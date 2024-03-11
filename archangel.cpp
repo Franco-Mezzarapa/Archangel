@@ -3,6 +3,7 @@
 session_data current_session = current_session;
 
 int main(int argc, char** argv){
+
  if (argc < 2) {
         //usage: ./archangel --wizard
         //usage: ./archangel scp exploit dropoff ip_addresses.txt username password
@@ -17,16 +18,20 @@ int main(int argc, char** argv){
         wizard_logic();
     }
     else if (strcmp(argv[1], "scp") == 0) {
-        if (argc < 7) {
+         
+	if (argc < 7) {
             std::cerr << "Usage: ./archangel scp <exploit> <dropoff> <ip_addresses_file> <username> <password>" << std::endl;
             return 1;
         }
+        printIntro_CLI();
         current_session.set_exploitFile(argv[2], argv[3]);
         current_session.set_ipfile(argv[4]);
         current_session.ssh_credential_set(argv[5],argv[6]);
+        
         current_session.SCP_sender();
     }
     else if (strcmp(argv[1], "ssh") == 0) {
+        printIntro_CLI();
         if (argc < 6) {
             std::cerr << "Usage: ./archangel ssh <ip_addresses_file> <username> <password> <commands_to_execute>" << std::endl;
             return 1;
@@ -34,6 +39,7 @@ int main(int argc, char** argv){
         current_session.set_ipfile(argv[2]);
         current_session.ssh_credential_set(argv[3],argv[4]);
         current_session.half_command_CLI = argv[5];
+        
         current_session.SSH_sender(current_session.half_command_CLI);
     }
     
