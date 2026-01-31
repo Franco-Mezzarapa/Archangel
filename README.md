@@ -169,7 +169,7 @@ webserver.local
 ```
 root
 admin
-ubuntu
+steve
 user
 ```
 
@@ -179,42 +179,6 @@ password
 Password123
 admin
 toor
-```
-
-## 🎯 Performance Tuning
-
-| Scenario | Recommended Threads |
-|----------|-------------------|
-| Local network | 10-20 |
-| Internet targets | 4-8 |
-| Slow connections | 2-4 |
-| Fast switches | 20-50 |
-
-## 🔧 Troubleshooting
-
-### No successful connections
-
-**Checklist:**
-- ✅ Verify network: `ping target`
-- ✅ Check SSH port: `nc -zv target 22`
-- ✅ Test manually: `ssh user@target`
-- ✅ Try verbose mode: `--verbose`
-
-### Slow execution
-
-```bash
-# Increase threads
-python3 archangel.py --threads 20 ...
-
-# Use quiet mode
-python3 archangel.py --quiet ...
-```
-
-### Too much output
-
-```bash
-# Use quiet mode
-python3 archangel.py --quiet ...
 ```
 
 ## 📊 Output Example
@@ -243,13 +207,6 @@ Successful Connections:
   ✓ 192.0.2.100 (admin)
   ✓ 192.0.2.101 (steve)
 ```
-
-## 🔐 Security Considerations
-
-⚠️ **This tool is NOISY:**
-- Leaves SSH logs on all targets
-- Authentication attempts are logged
-- Uploaded files may be detected
 
 ## ⚠️ Legal Disclaimer
 
