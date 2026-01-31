@@ -48,7 +48,6 @@ A powerful, multi-threaded SSH automation tool designed for penetration testing 
 - 🧵 **Multi-threaded** - Concurrent connections for speed (configurable)
 - 🔇 **Quiet Mode** - Minimal output for operational use
 - 🔊 **Verbose Mode** - Detailed output for debugging
-- 🛡️ **Robust Error Handling** - Clean output, no verbose exceptions
 - 🔄 **Auto-retry** - Handles transient connection failures
 
 ## 🚀 Installation
